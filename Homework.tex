@@ -216,7 +216,7 @@
 				\end{align*}
 				So the size of the light-sensitive image sensor of your smart-phone should be $2.88\:mm \times 2.88\:mm$. And the ratio should be
 				\begin{align*}
-					ratio\:=\:\frac{4\:mm}{50\:mm}\:=\:\frac{2}{25}
+					ratio\:=\:\frac{(4\:mm)^2}{(50\:mm)^2}\:=\:\frac{4}{625}
 				\end{align*}
 			 \item The square sensor provides 16 megapixels for a square image. So the size of the square image should be $4000 \times 4000$.
 				\begin{enumerate}[label=(\roman*)]
@@ -357,9 +357,9 @@
 		\\
 		Use the histogram code as developed above, and provide an additional function for histogram equalization.
 		\begin{itemize}
-			\item Follow instructions as in the book and course notes to calculate the histogram, pdf, CDF and then a binning of the frequency axis into n bins that determines the mapping of intensities to form a uniform distribution.
+			\item Follow instructions as in the book and course notes to calculate the histogram, pdf, cdf and then a binning of the frequency axis into n bins that determines the mapping of intensities to form a uniform distribution.
 			\item Apply your histogram equalization code to the images used before. Calculate and plot the new histogram after equalization.
-			\item Add an additional section to the report by showing images, pdf’s and CDF’s before/after equalization. Briefly discuss what you see in the histogram equalized images and the corresponding plots of pdf’s and CDF’s.
+			\item Add an additional section to the report by showing images, pdf and cdf before/after equalization. Briefly discuss what you see in the histogram equalized images and the corresponding plots of pdf's and cdf's.
 		\end{itemize}
 		
 	\item Histogram Matching
@@ -368,8 +368,8 @@
 		Following the course notes, develop code that maps intensity values of a preferably bad image into intensity distribution of a good looking image.
 		\begin{itemize}
 			\item Select an image with somewhat poor contrast or visibility of structures. Select a second image which looks good.
-			\item Calculate histograms, pdf’s, CDF’s of both images. Follow course instructions to map the intensity distributions of the first image into those of the second image (histogram matching).
-			\item Add a section to the report that shows original images and plots of pdf’s and CDF’s. Then show the results of the adjusted first image, and its pdf and CDF’s.
+			\item Calculate histograms, pdf's, cdf's of both images. Follow course instructions to map the intensity distributions of the first image into those of the second image (histogram matching).
+			\item Add a section to the report that shows original images and plots of pdf's and cdf's. Then show the results of the adjusted first image, and its pdf and cdf's.
 			\item Provide a short discussion of what you see and if the procedure resulted in the anticipated result.
 		\end{itemize}		
 \end{enumerate}
@@ -385,25 +385,279 @@ Before starting our project, we have to set up environment: I choose Python 3 an
 		\\
 		In this part, I picked up two images.
 		\begin{enumerate}[label=\arabic*)]
-			\item The \textit{Popeyes\textsuperscript{\tiny\textregistered} Fried Chicken} image %taken by myself:
+%			\item The \textit{Popeyes\textsuperscript{\tiny\textregistered} Fried Chicken} image %taken by myself:
+			\item The Pork Image (Algorithm Part):
+				\\
+				\\
+				It's quite easy for us to show the histogram, just aggregating all of the values from $0$ to $255 (L-1)$. Then we can try to calculate the corresponding PDF and CDF. And here's the simple python code to generate histogram, PDF and CDF.
+				\\
+				\inputminted[tabsize=4, linenos]{Python}{hist.py}
 				\begin{figure}[h!]
-				\begin{minipage}{0.48\textwidth}
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=20em]{Pork/Original.jpg}
+			            \captionof{figure}{The original image}
+					\end{minipage}
+					\hfill
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=20em]{Pork/Gray.png}
+						\captionof{figure}{The gray-scaled image}
+					\end{minipage}
+				\end{figure}
+				\begin{figure}[h!]
 					\centering
-					\includegraphics[width=20em]{Chicken/Original.jpg}
-				\end{minipage}
-				\hfill
-				\begin{minipage}{0.48\textwidth}
+					\includegraphics[width=0.6\linewidth]{Pork/Histogram.png}
+		            \captionof{figure}{Histogram (using \texttt{matplotlib.plot}) of the gray-scaled image}
+				\end{figure}
+				\begin{figure}[h!]
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Pork/Histogram(bin-256).png}
+			            \captionof{figure}{Histogram (using \texttt{matplotlib.hist}) of the gray-scaled image, \# of bins = 256 (L)}					\end{minipage}
+					\hfill
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Pork/Histogram(bin-64).png}
+			            \captionof{figure}{Histogram (using \texttt{matplotlib.hist}) of the gray-scaled image, \# of bins = 64 ($\frac{L}{4}$)}
+					\end{minipage}
+				\end{figure}
+				\begin{figure}[h!]
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Pork/PDF.png}
+			            \captionof{figure}{Probability Density Function (PDF) of the gray-scaled image}
+					\end{minipage}
+					\hfill
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Pork/CDF.png}
+			            \captionof{figure}{Cumulative Distribution Function (CDF) of the gray-scaled image}
+					\end{minipage}
+				\end{figure}
+				\pagebreak
+			\item The Mountain Image from OpenCV Website (Comparison part):
+				\\
+				\\
+				I chose the Figure 10 and 12 to make a comparison on histogram. We can see that although they are different in pixels, they still share the same histogram, pdf and cdf. So histogram, pdf, as well as cdf are based on the pixels, not the position. 
+				\begin{figure}[h!]
+					\begin{minipage}{0.32\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Hist/Hist1.jpg}
+			            \captionof{figure}{The original image}
+					\end{minipage}
+					\hfill
+					\begin{minipage}{0.32\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Hist/Hist1_gray.png}
+			            \captionof{figure}{The gray-scaled image}
+					\end{minipage}
+					\hfill
+					\begin{minipage}{0.32\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Hist/Hist2.jpg}
+			            \captionof{figure}{The clipped image}
+					\end{minipage}
+				\end{figure}
+				\begin{figure}[h!]
 					\centering
-					\includegraphics[width=20em]{Chicken/Gray.png}
-				\end{minipage}
+					\includegraphics[width=0.6\linewidth]{Hist/Histogram.png}
+		            \captionof{figure}{Histogram (using \texttt{matplotlib.plot}) of the gray-scaled image}
+				\end{figure}
+				\begin{figure}[h!]
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Hist/Histogram(bin-256).png}
+			            \captionof{figure}{Histogram (using \texttt{matplotlib.hist}) of the gray-scaled image, \# of bins = 256 (L)}					\end{minipage}
+					\hfill
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Hist/Histogram(bin-64).png}
+			            \captionof{figure}{Histogram (using \texttt{matplotlib.hist}) of the gray-scaled image, \# of bins = 64 ($\frac{L}{4}$)}
+					\end{minipage}
+				\end{figure}
+				\begin{figure}[h!]
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Hist/PDF.png}
+			            \captionof{figure}{Probability Density Function (PDF) of the gray-scaled image}
+					\end{minipage}
+					\hfill
+					\begin{minipage}{0.48\textwidth}
+						\centering
+						\includegraphics[width=0.9\linewidth]{Hist/CDF.png}
+			            \captionof{figure}{Cumulative Distribution Function (CDF) of the gray-scaled image}
+					\end{minipage}
+				\end{figure}
+		\end{enumerate}
+	\pagebreak
+	\item Histogram Equalization 
+		\\
+		\\
+		I still used Figure 10 to continue this part. The algorithm of histogram equalization and matching are almost the same. We can iterate all of the possible values of pixels to find $CDF_1(x)\:=\:CDF_2(x')$, then we replace value $x$ with $x'$. In equalization part, $CDF_2(x)\:=\:\frac{1}{L}x$.
+		\\
+		\\
+		We could see that, after equalization, the value distribution of PDF is approaching equally. Also, the CDF could somehow be represented as $CDF(x)\:=\:\frac{1}{L}x$. But we can find that there are some stairs in the plot of CDF, because some of the values could not find the relative/mapping values (which is discussed at Theory Part A2). 
+		\\
+		\\
+		The original gray-scaled image, after histogram equalization, shows more details on the light part. The brightness of the dark part comes down.
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.7\linewidth]{img-6.png}
+            \captionof{figure}{Histogram Equalization Algorithm}
 		\end{figure}
 
-		\end{enumerate}
-%		an image from OpenCV website to show its histogram and CDF.
+		\inputminted[tabsize=4, linenos]{Python}{equalization.py}
+		\begin{figure}[h!]
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Hist/Hist1.jpg}
+	            \captionof{figure}{The original image}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Hist/Hist1_gray.png}
+	            \captionof{figure}{The gray-scaled image}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Hist/Equalized/Hist1_equalized.png}
+	            \captionof{figure}{The equalized image}
+			\end{minipage}
+		\end{figure}
+		\begin{figure}[h!]
+			\begin{minipage}{0.24\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Hist/Equalized/Histogram(bin-256).png}
+	            \captionof{figure}{Histogram, \# of bins = 256 (L)}					\end{minipage}
+			\hfill
+			\begin{minipage}{0.24\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Hist/Equalized/Histogram(bin-64).png}
+	            \captionof{figure}{Histogram, \# of bins = 64 ($\frac{L}{4}$)}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.24\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Hist/Equalized/Histogram(bin-32).png}
+	            \captionof{figure}{Histogram, \# of bins = 32 ($\frac{L}{8}$)}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.24\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Hist/Equalized/Histogram(bin-16).png}
+	            \captionof{figure}{Histogram, \# of bins = 16 ($\frac{L}{16}$)}
+			\end{minipage}
+		\end{figure}
+		\begin{figure}[h!]
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Hist/Equalized/PDF.png}
+	            \captionof{figure}{Probability Density Function (PDF) of the equalized gray-scaled image}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Hist/Equalized/CDF.png}
+	            \captionof{figure}{Cumulative Distribution Function (CDF) of the equalized gray-scaled image}
+			\end{minipage}
+		\end{figure}
 		
-	\item Histogram Equalization 
-				
+	\pagebreak
 	\item Histogram Matching
+		\\
+		\\
+		In this part, I picked up an anime photo as the original image. The colored image looks too bright and I use the Pork as the matching one. The algorithm of histogram matching is same as histogram equalization. We can iterate all of the possible values of pixels to find $CDF_1(x)\:=\:CDF_2(x')$, then we replace value $x$ with $x'$. In this part, $CDF_2(x)\:=\:\frac{1}{L}x$.
+		\\
+		\\
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.68\linewidth]{img-7.png}
+            \captionof{figure}{Histogram Matching Algorithm}
+		\end{figure}
+		\\
+		\\
+		We could see that after histogram matching, the image contrast was balanced and we got the really nice photo.
+		\begin{figure}[h!]
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[width=0.6\linewidth]{Pork/Original.jpg}
+	            \captionof{figure}{The original Pork image}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[width=0.6\linewidth]{Pork/Gray.png}
+				\captionof{figure}{The gray-scaled Pork image}
+			\end{minipage}
+		\end{figure}
+		\begin{figure}[h!]
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.8\linewidth]{Chino/Original.png}
+				\captionof{figure}{The original image}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.8\linewidth]{Chino/Gray.png}
+	            \captionof{figure}{The gray-scaled image}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.8\linewidth]{Chino/Equalized.png}
+	            \captionof{figure}{The matched image}
+			\end{minipage}
+		\end{figure}
+		\\
+		\\
+		Figure 5, 8, 9 are the histogram, pdf and cdf of the Pork image. Figure 34, 35, 36 are the histogram, pdf and cdf of the anime image before matching. And Figure 37, 38, 39 are the histogram, pdf and cdf of the anime image after matching.
+		\\
+		\\
+		Here's the code of histogram matching.
+		\\
+		\inputminted[tabsize=4, linenos]{Python}{matching.py}
+		\begin{figure}[h!]
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Chino/Before/Hist.png}
+				\captionof{figure}{Histogram (before)}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Chino/Before/PDF.png}
+	            \captionof{figure}{PDF (before)}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Chino/Before/CDF.png}
+	            \captionof{figure}{CDF (before)}
+			\end{minipage}
+		\end{figure}
+		\begin{figure}[h!]
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Chino/After/Hist.png}
+				\captionof{figure}{Histogram (after)}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Chino/After/PDF.png}
+	            \captionof{figure}{PDF (after)}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.32\textwidth}
+				\centering
+				\includegraphics[width=0.9\linewidth]{Chino/After/CDF.png}
+	            \captionof{figure}{CDF (after)}
+			\end{minipage}
+		\end{figure}
 		
 \end{enumerate}
 
